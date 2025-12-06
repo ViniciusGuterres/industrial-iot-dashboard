@@ -1,0 +1,32 @@
+backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sentinel-api
+    environment:
+      DATABASE_URL: postgres://admin:rootpassword@sentinel-db:5432/sentinel_metrics
+      NODE_ENV: development 
+    volumes:
+      - ./backend:/usr/src/app # Bind mount to Hot Reload
+      - /usr/src/app/node_modules 
+    networks:
+      - industrial-net
+    ports:
+      - "3001:3000"
+    depends_on:
+      - database
+
+  edge-node-red:
+    image: nodered/node-red
+    container_name: sentinel-edge
+    user: root # Required to install extra packages if needed 
+    volumes:
+      - ./edge/data:/data
+    networks:
+      - industrial-net
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=America/Sao_Paulo
+    depends_on:
+      - backend
