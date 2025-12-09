@@ -5,7 +5,7 @@
     docker-compose up -d sentinel-db
 
 # Run docker Node-RED:
-    docker-compose up -d --no-deps edge-node-red
+    docker-compose up -d --no-deps sentinel-edge
 
 ## Start Node-RED:
     
@@ -24,7 +24,6 @@
 ## View logs (if needed):
 
     sudo docker logs sentinel-edge
-
 
 ## Remove completely (if you need to recreate):
 
