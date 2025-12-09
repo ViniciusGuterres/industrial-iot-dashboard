@@ -4,14 +4,13 @@
 
     docker-compose up -d sentinel-db
 
-## Stop Node-RED:
-    
-    sudo docker stop sentinel-edge
-
-
 ## Start Node-RED:
     
     sudo docker start sentinel-edge
+
+## Stop Node-RED:
+    
+    sudo docker stop sentinel-edge
 
 
 ## Check if it's running:
