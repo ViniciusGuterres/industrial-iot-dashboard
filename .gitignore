@@ -138,8 +138,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-architecture.md
-
 # Node-RED runtime files
 edge/data/.config.runtime.json
 edge/data/.config.runtime.json.backup
