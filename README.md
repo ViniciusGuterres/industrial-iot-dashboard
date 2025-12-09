@@ -1,8 +1,11 @@
 # industrial-iot-dashboard
 
-# Run docker:
+# Run docker db:
 
     docker-compose up -d sentinel-db
+
+# Run docker Node-RED:
+    docker-compose up -d --no-deps edge-node-red
 
 ## Start Node-RED:
     
