@@ -15,7 +15,7 @@ services:
     networks:
       - industrial-net
 
-  backend:
+  sentinel-api:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -33,7 +33,7 @@ services:
     depends_on:
       - sentinel-db
 
-  edge-node-red:
+  sentinel-edge:
     image: nodered/node-red
     container_name: sentinel-edge
     user: root
@@ -46,13 +46,13 @@ services:
     environment:
       - TZ=America/Sao_Paulo
     depends_on:
-      - backend
+      - sentinel-api
 
-  frontend:
+  sentinel-dashboard:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: sentinel-dash
+    container_name: sentinel-dashboard
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:3001
     ports:
@@ -60,7 +60,7 @@ services:
     networks:
       - industrial-net
     depends_on:
-      - backend
+      - sentinel-api
 
 networks:
   industrial-net:
