@@ -56,7 +56,7 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:3001
     ports:
-      - "3000:3000"
+      - "3002:3000"
     networks:
       - industrial-net
     depends_on:
