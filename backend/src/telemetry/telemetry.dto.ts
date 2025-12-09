@@ -8,5 +8,5 @@ export class CreateTelemetryDto {
     sensorType: string;
 
     @IsNumber()
-    value: number;
+    value: number; 
 }
