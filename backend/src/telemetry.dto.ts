@@ -1,10 +1,10 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsNumber, IsIn } from 'class-validator';
 
 export class CreateTelemetryDto {
     @IsString()
     machineId: string;
 
-    @IsString()
+    @IsIn(['temperature', 'vibration'])
     sensorType: string;
 
     @IsNumber()
