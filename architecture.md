@@ -235,5 +235,6 @@ Start by creating the backend structure with:
 **4. Melhorias Frontend - PRIORIDADE BAIXA**
 - [ ] Adicionar gráficos de telemetria em tempo real
 - [ ] Implementar WebSocket para updates em tempo real
+- [ ] Ajustar view
 - [ ] Dashboard de status das máquinas
 - [ ] Filtros por severidade e máquina
