@@ -54,13 +54,6 @@ cd backend
 npx prisma migrate dev
 ```
 
-### 4. Access the services
-
-- **Frontend Dashboard**: http://localhost:3000
-- **Backend API**: http://localhost:3001
-- **Node-RED Editor**: http://localhost:1880
-- **Prisma Studio**: `npx prisma studio` (from backend directory)
-
 ## Business Logic
 
 The system monitors two machines:
