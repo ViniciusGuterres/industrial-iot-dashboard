@@ -4,6 +4,9 @@ A proof-of-concept industrial IoT monitoring system simulating real-time telemet
 
 ## Architecture
 
+<img width="1054" height="705" alt="image" src="https://github.com/user-attachments/assets/b5dd2167-278e-4565-a5a0-0310f36021a3" />
+
+
 This system uses a containerized microservices architecture with the following components:
 
 - **Edge Layer**: Node-RED simulates industrial sensors (temperature, vibration)
