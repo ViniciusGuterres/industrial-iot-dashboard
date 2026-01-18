@@ -87,7 +87,7 @@ export class IotStack extends cdk.Stack {
     // Outputs
     new cdk.CfnOutput(this, 'OutputIotEndpoint', {
       value: this.iotEndpoint,
-      description: 'Use este endpoint no Node-RED (Porta 8883)',
+      description: 'Use this endpoint on NODE-RED (Port 8883)',
       exportName: 'Sentinel-IotEndpoint'
     });
 
