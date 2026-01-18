@@ -25,7 +25,7 @@ export class IotStack extends cdk.Stack {
 
     // 2. IoT Policy (Perms)
     const policy = new iot.CfnPolicy(this, 'SentinelPolicy', {
-      policyName: 'Sentinel-Policy-CDK', // Nome diferente do manual para evitar conflito de overwrite
+      policyName: 'Sentinel-Policy-CDK', // Different name from manual to avoid overwrite conflicts
       policyDocument: {
         Version: '2012-10-17',
         Statement: [
