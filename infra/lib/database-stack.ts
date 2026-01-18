@@ -75,7 +75,8 @@ export class DatabaseStack extends cdk.Stack {
       maxAllocatedStorage: 20, // Security: Prevents auto-scaling (not recommended for production env)
 
       multiAz: false, // Economy: Guarantees Single-AZ (not recommended for production env)
-      publiclyAccessible: false, // Security
+      publiclyAccessible: false, // Security: Only VPC can access
+      storageEncrypted: true, // Security: Encryption at rest (free tier eligible)
 
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false,
@@ -86,8 +87,8 @@ export class DatabaseStack extends cdk.Stack {
 
     });
 
-    // Allows internal connections on port 5432
-    // this.rdsInstance.connections.allowFromAnyIpv4(ec2.Port.tcp(5432), 'Allow internal access');
+    // Security: RDS connections are managed by security groups in api-stack.ts
+    // No need to explicitly allow connections here
 
     // OUTPUTS
     new cdk.CfnOutput(this, 'TelemetryTableName', {
