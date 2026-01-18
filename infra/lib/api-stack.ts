@@ -95,36 +95,30 @@ export class ApiStack extends cdk.Stack {
 
 
     // ============================================================
-    // 3. INTERNAL LOAD BALANCER (ALB)
+    // 3. NETWORK LOAD BALANCER (NLB)
     // ============================================================
+    // NLB is required for VPC Link (API Gateway integration)
     // Costs ~$18/month. Destroy stack when not in use!
 
-    // ALB Security Group
-    const albSG = new ec2.SecurityGroup(this, 'AlbSG', {
-      vpc: props.vpc,
-      description: 'Security group for internal ALB',
-      allowAllOutbound: true
-    });
-
-    const lb = new elbv2.ApplicationLoadBalancer(this, 'InternalALB', {
+    const lb = new elbv2.NetworkLoadBalancer(this, 'InternalNLB', {
       vpc: props.vpc,
       internetFacing: false, // Private! Only API Gateway accesses.
-      securityGroup: albSG
     });
 
     const listener = lb.addListener('HttpListener', { port: 80 });
 
     listener.addTargets('FargateTarget', {
-      port: 80,
+      port: 3000,
       targets: [service],
-      healthCheck: { path: '/health', interval: cdk.Duration.seconds(60) } // NestJS health check
+      healthCheck: { 
+        protocol: elbv2.Protocol.HTTP,
+        path: '/health', 
+        interval: cdk.Duration.seconds(60) 
+      }
     });
 
     // SECURITY: Fargate only accepts traffic from Load Balancer
-    fargateSG.addIngressRule(albSG, ec2.Port.tcp(3000), 'Allow ALB to Fargate');
-
-    // ALB can reach Fargate
-    albSG.addEgressRule(fargateSG, ec2.Port.tcp(3000), 'ALB to Fargate');
+    fargateSG.addIngressRule(ec2.Peer.ipv4(props.vpc.vpcCidrBlock), ec2.Port.tcp(3000), 'Allow NLB to Fargate');
 
     // Allow Fargate to connect to RDS
     props.database.connections.allowFrom(fargateSG, ec2.Port.tcp(5432), 'Fargate to RDS');
