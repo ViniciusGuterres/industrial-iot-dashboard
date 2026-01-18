@@ -27,7 +27,8 @@ export class ProcessingStack extends cdk.Stack {
       runtime: lambda.Runtime.PROVIDED_AL2023, // Use the latest Amazon Linux version
       handler: 'bootstrap', // Standard for Go
 
-      // Ensure the binary was compiled for ARM64 (see instructions below)
+      // Ensure the binary was compiled for ARM64
+      // Build command: GOOS=linux GOARCH=arm64 go build -o dist/bootstrap main.go
       code: lambda.Code.fromAsset('../ingestion-lambda-go/dist'),
 
       // If it takes more than 10s to save to DynamoDB, something is wrong. Let it Crashes (Not recommended for production envs)
