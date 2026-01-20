@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+# Set dummy DATABASE_URL for Prisma generate (actual URL comes from Secrets Manager at runtime)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate
 
 EXPOSE 3000
