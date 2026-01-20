@@ -69,8 +69,8 @@ export class DatabaseStack extends cdk.Stack {
 
       databaseName: 'sentinel_metrics',
 
-      // It generates password in the Secrets Manager (~$0.40/mês). 
-      credentials: rds.Credentials.fromGeneratedSecret('admin'),
+      // Changed username from 'admin' (reserved word) to 'dbadmin'
+      credentials: rds.Credentials.fromGeneratedSecret('dbadmin'),
 
       allocatedStorage: 20, // Free tier exact limit
       maxAllocatedStorage: 20, // Security: Prevents auto-scaling (not recommended for production env)
