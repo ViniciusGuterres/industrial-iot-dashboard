@@ -79,7 +79,8 @@ export class AuthStack extends cdk.Stack {
     this.userPoolDomain = this.userPool.addDomain('SentinelDomain', {
       cognitoDomain: {
         // Create a unique name. Add account ID suffix to prevent conflicts.
-        domainPrefix: `sentinel-dashboard-${this.account.substring(0, 8)}`
+        // Must be lowercase alphanumeric and hyphens only
+        domainPrefix: `sentinel-dashboard-${this.account.substring(0, 8).toLowerCase()}`
       }
     });
 
