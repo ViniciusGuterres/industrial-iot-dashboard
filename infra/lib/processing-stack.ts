@@ -42,8 +42,8 @@ export class ProcessingStack extends cdk.Stack {
       logRetention: logs.RetentionDays.ONE_DAY,
 
       environment: {
-        DYNAMODB_TABLE: props.telemetryTable.tableName,
-        AWS_REGION: this.region
+        DYNAMODB_TABLE: props.telemetryTable.tableName
+        // AWS_REGION is automatically set by Lambda runtime
       }
     });
 
