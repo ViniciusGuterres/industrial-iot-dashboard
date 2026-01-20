@@ -20,6 +20,8 @@ interface ApiStackProps extends cdk.StackProps {
 
 export class ApiStack extends cdk.Stack {
   public readonly apiGateway: apigateway.RestApi;
+  public readonly cluster: ecs.Cluster;       
+  public readonly service: ecs.FargateService;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
