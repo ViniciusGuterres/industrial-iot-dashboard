@@ -41,22 +41,15 @@ func init() {
 	tableName = os.Getenv("DYNAMODB_TABLE")
 }
 
-func handler(ctx context.Context, sqsEvent events.SQSEvent) (events.SQSBatchResponse, error) {
-	var batchItemFailures []events.SQSBatchItemFailure
-
+func handler(ctx context.Context, sqsEvent events.SQSEvent) error {
 	for _, record := range sqsEvent.Records {
 		if err := processMessage(record.Body); err != nil {
 			fmt.Printf("Error processing message %s: %v\n", record.MessageId, err)
-			// Add failed message to response
-			batchItemFailures = append(batchItemFailures, events.SQSBatchItemFailure{
-				ItemIdentifier: record.MessageId,
-			})
+			// Return error to retry the entire batch
+			return err
 		}
 	}
-
-	return events.SQSBatchResponse{
-		BatchItemFailures: batchItemFailures,
-	}, nil
+	return nil
 }
 
 func processMessage(body string) error {
