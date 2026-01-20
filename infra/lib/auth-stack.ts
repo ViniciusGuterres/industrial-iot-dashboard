@@ -76,12 +76,12 @@ export class AuthStack extends cdk.Stack {
 
     // 3. DOMAIN (AWS Login Screen)
     // To use Hosted UI (ready-made login screen), we need a domain prefix.
-    // Use a simple static prefix to avoid account ID issues
-    const timestamp = Date.now().toString().substring(0, 8);
+    // Use account ID to ensure uniqueness (lowercase, no special chars)
+    const accountSuffix = this.account.substring(this.account.length - 8);
     this.userPoolDomain = this.userPool.addDomain('SentinelDomain', {
       cognitoDomain: {
         // Must be globally unique, lowercase alphanumeric and hyphens only
-        domainPrefix: `sentinel-dash-${timestamp}`
+        domainPrefix: `sentinel-iot-${accountSuffix}`
       }
     });
 
