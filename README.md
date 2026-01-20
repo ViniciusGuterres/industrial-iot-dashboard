@@ -140,6 +140,12 @@ npx prisma studio
 npx prisma generate
 ```
 
+## AWS CloudWatch
+
+https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=Industrial-Sentinel-IoT-Dashboard
+
+
+
 ## Project Structure
 
 ```
