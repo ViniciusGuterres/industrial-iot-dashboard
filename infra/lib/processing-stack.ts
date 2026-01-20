@@ -56,11 +56,7 @@ export class ProcessingStack extends cdk.Stack {
       new lambdaEventSources.SqsEventSource(props.queue, {
         batchSize: 10,
         // Batching window to group messages (reduces cold starts)
-        maxBatchingWindow: cdk.Duration.seconds(5),
-
-        // Allows returning which messages failed in the batch, avoiding reprocessing successes.
-        // Your Go code needs to return an "SQSBatchResponse" object.
-        reportBatchItemFailures: true
+        maxBatchingWindow: cdk.Duration.seconds(5)
       })
     );
 
