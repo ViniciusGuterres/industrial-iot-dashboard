@@ -13,6 +13,7 @@ export class DatabaseStack extends cdk.Stack {
   public readonly telemetryTable: dynamodb.Table;
   public readonly rdsInstance: rds.DatabaseInstance;
   public readonly ingestionQueue: sqs.Queue;
+  public readonly fargateSecurityGroup: ec2.SecurityGroup; // Export SG
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -86,6 +87,16 @@ export class DatabaseStack extends cdk.Stack {
       // backupRetention: cdk.Duration.days(0),
 
     });
+
+    // Create Fargate Security Group here to avoid circular dependency
+    this.fargateSecurityGroup = new ec2.SecurityGroup(this, 'FargateSG', {
+      vpc: props.vpc,
+      description: 'Security group for Fargate tasks',
+      allowAllOutbound: true
+    });
+
+    // Allow Fargate to connect to RDS
+    this.rdsInstance.connections.allowFrom(this.fargateSecurityGroup, ec2.Port.tcp(5432), 'Fargate to RDS');
 
     // Security: RDS connections are managed by security groups in api-stack.ts
     // No need to explicitly allow connections here
