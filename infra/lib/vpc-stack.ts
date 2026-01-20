@@ -10,7 +10,7 @@ export class VpcStack extends cdk.Stack {
 
     this.vpc = new ec2.Vpc(this, 'IndustrialVpc', {
       maxAzs: 2,
-      natGateways: 1, // Cost: ~$32/month - Consider 0 if using public subnets for Fargate
+      natGateways: 0, // Cost: ~$32/month - Consider 0 if using public subnets for Fargate (I will set 0 for economy in my Poc)
       subnetConfiguration: [
         {
           cidrMask: 24,
