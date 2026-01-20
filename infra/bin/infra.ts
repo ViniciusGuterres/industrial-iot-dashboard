@@ -19,11 +19,10 @@ const env = {
 const vpcStack = new VpcStack(app, 'IndustrialSentinelVpc', { env });
 
 // Database Stack - DynamoDB + SQS + RDS
-const databaseStack = new DatabaseStack(app, 'IndustrialSentinelDatabase', { 
+const databaseStack = new DatabaseStack(app, 'IndustrialSentinelDatabase', {
   env,
-  vpc: vpcStack.vpc 
+  vpc: vpcStack.vpc
 });
-databaseStack.addDependency(vpcStack);
 
 // Auth Stack - Cognito
 const authStack = new AuthStack(app, 'IndustrialSentinelAuth', { env });
@@ -33,7 +32,6 @@ const iotStack = new IotStack(app, 'IndustrialSentinelIot', {
   env,
   queue: databaseStack.ingestionQueue
 });
-iotStack.addDependency(databaseStack);
 
 // Processing Stack - Lambda (Go) triggered by SQS
 const processingStack = new ProcessingStack(app, 'IndustrialSentinelProcessing', {
@@ -41,7 +39,6 @@ const processingStack = new ProcessingStack(app, 'IndustrialSentinelProcessing',
   telemetryTable: databaseStack.telemetryTable,
   queue: databaseStack.ingestionQueue
 });
-processingStack.addDependency(databaseStack);
 
 // API Stack - API Gateway + ECS Fargate (NestJS)
 const apiStack = new ApiStack(app, 'IndustrialSentinelApi', {
@@ -49,8 +46,6 @@ const apiStack = new ApiStack(app, 'IndustrialSentinelApi', {
   vpc: vpcStack.vpc,
   telemetryTable: databaseStack.telemetryTable,
   database: databaseStack.rdsInstance,
-  userPool: authStack.userPool
+  userPool: authStack.userPool,
+  fargateSecurityGroup: databaseStack.fargateSecurityGroup // Pass SG from DatabaseStack
 });
-apiStack.addDependency(vpcStack);
-apiStack.addDependency(databaseStack);
-apiStack.addDependency(authStack);
