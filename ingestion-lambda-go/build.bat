@@ -1,12 +1,12 @@
 @echo off
 echo Building Go Lambda for ARM64...
 
-REM Download dependencies first
-echo Downloading Go dependencies...
-go mod download
+REM Download dependencies and create go.sum
+echo Tidying Go modules...
+go mod tidy
 
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Failed to download dependencies!
+    echo ❌ Failed to tidy modules!
     exit /b 1
 )
 
