@@ -7,6 +7,7 @@ import { AuthStack } from '../lib/auth-stack';
 import { IotStack } from '../lib/iot-stack';
 import { ProcessingStack } from '../lib/processing-stack';
 import { ApiStack } from '../lib/api-stack';
+import { MonitoringStack } from '../lib/monitoring-stack';
 
 const app = new cdk.App();
 
@@ -14,6 +15,10 @@ const env = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION || 'us-east-1',
 };
+
+console.log('CDK Environment::::');
+console.log('   Account:', env.account || 'NOT SET');
+console.log('   Region:', env.region);
 
 // VPC Stack - Base networking
 const vpcStack = new VpcStack(app, 'IndustrialSentinelVpc', { env });
@@ -49,3 +54,18 @@ const apiStack = new ApiStack(app, 'IndustrialSentinelApi', {
   userPool: authStack.userPool,
   fargateSecurityGroup: databaseStack.fargateSecurityGroup // Pass SG from DatabaseStack
 });
+
+// Monitoring Stack - CloudWatch Dashboard
+const monitoringStack = new MonitoringStack(app, 'IndustrialSentinelMonitoring', {
+  env,
+  ingestionQueue: databaseStack.ingestionQueue,
+  processorLambda: processingStack.processorLambda,
+  telemetryTable: databaseStack.telemetryTable,
+  apiGateway: apiStack.apiGateway,
+  ecsClusterName: 'industrial-sentinel-cluster',
+  ecsServiceName: 'BackendService',
+  rdsInstance: databaseStack.rdsInstance,
+});
+
+console.log('\n📊 Monitoring Dashboard will be created at:');
+console.log('   https://console.aws.amazon.com/cloudwatch/home?region=' + env.region + '#dashboards:name=Industrial-Sentinel-IoT-Dashboard');
