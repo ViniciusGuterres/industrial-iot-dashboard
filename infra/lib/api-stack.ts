@@ -15,6 +15,7 @@ interface ApiStackProps extends cdk.StackProps {
   telemetryTable: dynamodb.Table;
   database: rds.DatabaseInstance;
   userPool: cognito.UserPool;
+  fargateSecurityGroup: ec2.SecurityGroup; // Receive SG from DatabaseStack
 }
 
 export class ApiStack extends cdk.Stack {
@@ -78,8 +79,8 @@ export class ApiStack extends cdk.Stack {
 
     container.addPortMappings({ containerPort: 3000 });
 
-    // Fargate Security Group
-    const fargateSG = new ec2.SecurityGroup(this, 'FargateSG', { vpc: props.vpc });
+    // Use Security Group from DatabaseStack (avoids circular dependency)
+    const fargateSG = props.fargateSecurityGroup;
 
     const service = new ecs.FargateService(this, 'BackendService', {
       cluster,
@@ -120,8 +121,7 @@ export class ApiStack extends cdk.Stack {
     // SECURITY: Fargate only accepts traffic from Load Balancer
     fargateSG.addIngressRule(ec2.Peer.ipv4(props.vpc.vpcCidrBlock), ec2.Port.tcp(3000), 'Allow NLB to Fargate');
 
-    // Allow Fargate to connect to RDS
-    props.database.connections.allowFrom(fargateSG, ec2.Port.tcp(5432), 'Fargate to RDS');
+    // RDS connection already configured in DatabaseStack
 
     // ============================================================
     // 4. API GATEWAY + COGNITO + VPC LINK
