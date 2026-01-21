@@ -89,10 +89,11 @@ export class ApiStack extends cdk.Stack {
       taskDefinition,
       desiredCount: 1,
 
-      // SECURITY: Fargate in private subnet with NAT Gateway
-      // NAT Gateway cost: ~$32/month (acceptable for testing, destroy after demo)
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
-      assignPublicIp: false,
+      // PoC: Fargate in public subnet (no NAT Gateway needed)
+      // Saves $32/month - acceptable for development
+      // IN PRODUCTION IT MUST BE PRIVATE!
+      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
+      assignPublicIp: true,
       securityGroups: [fargateSG]
     });
 
