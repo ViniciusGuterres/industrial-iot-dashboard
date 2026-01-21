@@ -64,8 +64,8 @@ export class DatabaseStack extends cdk.Stack {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
 
       vpc: props.vpc,
-      // Security: It keeps the database private. Only Lambda/ECS at the same VPC can access.
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
+      // Security: Turn the subnet public just for the Poc context. IN PRODUCTION IT MUST BE PRIVATE!
+      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
 
       databaseName: 'sentinel_metrics',
 
