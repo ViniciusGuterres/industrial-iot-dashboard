@@ -4,7 +4,7 @@ A proof-of-concept industrial IoT monitoring system simulating real-time telemet
 
 ## Architecture
 
-<img width="1054" height="705" alt="image" src="https://github.com/user-attachments/assets/b5dd2167-278e-4565-a5a0-0310f36021a3" />
+<img width="1294" height="667" alt="image" src="https://github.com/user-attachments/assets/f55ce2c6-e544-46dc-8264-ccaeabe259f9" />
 
 
 This system uses a containerized microservices architecture with the following components:
