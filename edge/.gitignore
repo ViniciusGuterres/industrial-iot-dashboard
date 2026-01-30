@@ -1,0 +1,22 @@
+# Local Node-RED configuration (contains real endpoints/secrets)
+flows-aws.local.json
+*.local.json
+
+# Node-RED runtime files
+data/.config.*.json
+data/.config.*.json.backup
+data/.flows*.backup
+data/flows_cred.json
+data/package-lock.json
+data/node_modules/
+
+# Certificates (NEVER commit these!)
+data/certs/
+*.pem
+*.crt
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
