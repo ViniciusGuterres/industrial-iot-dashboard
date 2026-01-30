@@ -144,3 +144,13 @@ edge/data/.config.runtime.json.backup
 edge/data/flows_cred.json
 edge/data/.sessions.json
 edge/data/.config.nodes.json
+
+# Node-RED local configuration (contains real endpoints/secrets)
+edge/flows-aws.local.json
+edge/*.local.json
+
+# IoT Certificates (NEVER commit!)
+edge/data/certs/
+edge/**/*.pem
+edge/**/*.crt
+edge/**/*.key
