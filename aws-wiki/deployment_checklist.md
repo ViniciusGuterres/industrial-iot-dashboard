@@ -387,3 +387,15 @@ cdk destroy --all
 - PRODUCTION_READINESS.md
 - CLEANUP_GUIDE.md
 - ARCHITECTURE_REVIEW.md
+
+## What could be deployed all the time:
+
+- IoT Core: (No costs when not using).
+
+DynamoDB: (Only pay for storage).
+
+SQS: (No costs when not using).
+
+Lambda: (No costs when not using).
+
+Cognito: (Free for 50k users).
