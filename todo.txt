@@ -1,0 +1,80 @@
+FASE 1: Infraestrutura Cloud (Setup AWS) ☁️
+[ X ] Configurar AWS IoT Core:
+
+Criar uma "Thing" chamada Sentinel-Gateway.
+
+Gerar e baixar os certificados (Certificate, Private Key, Root CA). Guarde isso!
+
+Criar uma Policy (Permitir iot:Connect, iot:Publish, iot:Subscribe) e anexar ao certificado.
+
+[ X ] Criar Fila SQS:
+
+Nome: sentinel-ingestion-queue (Com Long Polling 20s e DLQ).
+
+[ ] Criar Regra IoT (The Glue):
+
+Ir em Message Routing > Rules.
+
+Query: SELECT * FROM 'sentinel/telemetry'.
+
+Action: Send a message to an SQS queue -> Selecionar sentinel-ingestion-queue.
+
+[ ] Criar Tabela DynamoDB:
+
+Nome: SentinelTelemetry (PK: deviceId, SK: timestamp).
+
+FASE 2: O Novo Edge (Node-RED + MQTT) 🏭
+[ ] Instalar Nó MQTT:
+
+No Node-RED, garantir que o node network/mqtt está disponível.
+
+[ ] Configurar Conexão Segura:
+
+Adicionar node mqtt out.
+
+Server: Endpoint do seu AWS IoT Core (ex: a3xxx...amazonaws.com).
+
+Porta: 8883.
+
+TLS Configuration: Fazer upload dos 3 arquivos (Certificado, Private Key, CA) que você baixou na Fase 1.
+
+[ ] Testar Envio:
+
+Tópico: sentinel/telemetry.
+
+Payload: JSON.
+
+Validação: Verificar se a mensagem chega na fila SQS pelo console da AWS.
+
+FASE 3: Processamento (Go & Serverless) ⚡
+[ ] Criar Lambda em Go:
+
+Lógica: Ler evento SQS -> Parse JSON -> Salvar no DynamoDB.
+
+[ ] Deploy da Lambda:
+
+Trigger: SQS sentinel-ingestion-queue.
+
+Role IAM: Permissão para ler SQS e escrever no DynamoDB.
+
+FASE 4: Refatoração do Backend (NestJS) 🧠
+[ ] Remover Ingestão HTTP:
+
+O endpoint POST /telemetry do NestJS pode ser removido (ou mantido apenas como fallback/debug).
+
+[ ] Implementar Leitura:
+
+Criar serviço no NestJS para ler dados do DynamoDB e servir para o Frontend via API Gateway.
+
+[ ] Segurança:
+
+Implementar Cognito Guard nas rotas do NestJS.
+
+FASE 5: Frontend & Apresentação 💻
+[ ] Integrar Login:
+
+Tela de Login usando Cognito.
+
+[ ] Visualização:
+
+Dashboard consumindo a API do NestJS (que agora lê do DynamoDB).
